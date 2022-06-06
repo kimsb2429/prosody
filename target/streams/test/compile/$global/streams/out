@@ -1,0 +1,16 @@
+[0m[[0m[31merror[0m] [0m[0m/root/prosody/src/test/scala/example/HelloSpec.scala:3:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest._[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0m/root/prosody/src/test/scala/example/HelloSpec.scala:5:25: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass HelloSpec extends FlatSpec with Matchers {[0m
+[0m[[0m[31merror[0m] [0m[0m                        ^[0m
+[0m[[0m[31merror[0m] [0m[0m/root/prosody/src/test/scala/example/HelloSpec.scala:5:39: not found: type Matchers[0m
+[0m[[0m[31merror[0m] [0m[0mclass HelloSpec extends FlatSpec with Matchers {[0m
+[0m[[0m[31merror[0m] [0m[0m                                      ^[0m
+[0m[[0m[31merror[0m] [0m[0m/root/prosody/src/test/scala/example/HelloSpec.scala:6:22: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "The Hello object" should "say hello" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                     ^[0m
+[0m[[0m[31merror[0m] [0m[0m/root/prosody/src/test/scala/example/HelloSpec.scala:7:20: value shouldEqual is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m    Hello.greeting shouldEqual "hello"[0m
+[0m[[0m[31merror[0m] [0m[0m                   ^[0m
+[0m[[0m[31merror[0m] [0m[0m5 errors found[0m
