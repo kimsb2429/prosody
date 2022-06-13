@@ -1,0 +1,49 @@
+name: Scala CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Scala utils
+      uses: olafurpg/setup-scala@v11
+      with:
+        java-version: adopt@1.8
+    - name: Build Test Validate
+      run: sbt -v -Dfile.encoding=UTF-8 +test
+      
+  publish:
+  
+    runs-on: ubuntu-latest
+    
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    
+      - uses: actions/checkout@v3
+      
+      - name: Setup Scala utils
+        uses: olafurpg/setup-scala@v11
+        with:
+          java-version: adopt@1.8
+      
+      - name: Build Test Generate Jar
+        run: sbt -v -Dfile.encoding=UTF-8 clean assembly
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+          
+      - name: Upload artifact to s3
+        run: find ./ -name "*jar" | xargs -I{} echo "aws s3 cp {} s3://prosodies/jars/"
