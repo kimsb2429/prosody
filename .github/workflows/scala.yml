@@ -46,4 +46,4 @@ jobs:
           aws-region: us-east-1
           
       - name: Upload artifact to s3
-        run: find ./ -name "*jar" | xargs -I{} echo "aws s3 cp {} s3://prosodies/jars/ | bash -"
+        run: find ./ -name "*jar" | xargs -I{} echo "aws s3 cp {} s3://prosodies/jars/" | bash -
