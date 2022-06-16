@@ -15,8 +15,8 @@ object Prosody extends App{
         val goldKey = args(2)
         val cmuDictLocation = args(3)
         // val soundoutScriptPath = "s3://prosodies/soundout.py"
-        val soundoutScriptPath = args(4)
-        val stressOutputPath = args(5)
+        val soundoutScript = args(4)
+        val stressOutput = args(5)
 
         // Build spark session
         val spark = SparkSession
@@ -103,13 +103,17 @@ object Prosody extends App{
           .select(col("unknownWords"))
           .coalesce(1)
 
+        val sc = spark.sparkContext
+        val soundoutScriptName = "./"+soundoutScript.split("/").last
+        sc.addFile(soundoutScript) 
+
         val unknownWordsRDD = unknownWordsDF.rdd
         //  // dbutils.fs.cp("dbfs:/FileStore/tables/test-1.py", "file:///tmp/test.py")
       //  // dbutils.fs.ls("file:/tmp/test.py")
       //  // val soundoutScriptPath = "file:/tmp/test.py"
         // val soundoutScriptPath = "s3://prosodies/soundout.py"
         // val soundoutScriptPath = "/Users/jaekim/wcd/wcd/hello_world/test.py"
-        val pipeRDD = unknownWordsRDD.pipe(soundoutScriptPath)
+        val pipeRDD = unknownWordsRDD.pipe(soundoutScriptName)
         // println(pipeRDD.count)
       //  pipeRDD.foreach(println)
 
@@ -118,7 +122,7 @@ object Prosody extends App{
           .coalesce(1)
           .write
           .mode("overwrite")
-          .save(stressOutputPath)
+          .save(stressOutput)
           // .save("s3://prosodies/stress.parquet")
         
 
