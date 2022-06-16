@@ -80,8 +80,8 @@ object Prosody extends App{
         val getStressUDF = udf[String, String](getStress).asNondeterministic()
 
         val textStressDF = cleanTextDF
-          //   .withColumn("origWord", split(col("cleanText"), " "))
-          //   .select(col("filename"), explode(col("origWord")).as("origWord"))
+          .withColumn("origWord", split(col("cleanText"), " "))
+          .select(col("filename"), explode(col("origWord")).as("origWord"))
           .join(broadcast(cmuDict), col("origWord") === col("dictWord"), "left")
           .withColumnRenamed("stress", "origStress").drop("pronunciation").drop("dictWord")
           .withColumn("origWordNoApos", regexp_replace(col("origWord"), "\\b'$|^'\\b", ""))
