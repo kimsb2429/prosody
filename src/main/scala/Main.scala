@@ -102,7 +102,7 @@ object Prosody extends App{
         //  // dbutils.fs.cp("dbfs:/FileStore/tables/test-1.py", "file:///tmp/test.py")
       //  // dbutils.fs.ls("file:/tmp/test.py")
       //  // val scriptPath = "file:/tmp/test.py"
-        val scriptPath = "/home/ec2-user/soundout.py"
+        val scriptPath = "s3://prosodies/soundout.py"
         // val scriptPath = "/Users/jaekim/wcd/wcd/hello_world/test.py"
         val pipeRDD = unknownWordsRDD.pipe(scriptPath)
         // println(pipeRDD.count)
