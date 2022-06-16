@@ -52,7 +52,7 @@ object Prosody extends App{
           // .select(col("filename"), explode(col("origWord")).as("origWord"))
         
         // store clean text as silver copy
-        // cleanTextDF.write.mode("overwrite").parquet(f"$silverKey")
+        cleanTextDF.write.mode("overwrite").parquet(f"$silverKey")
         
 
 
