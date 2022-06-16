@@ -48,8 +48,6 @@ object Prosody extends App{
           .withColumn("cleanText3", regexp_replace(col("cleanText2"), "[^a-zA-Z ']", " ")).drop("cleanText2")
           .withColumn("cleanText4", regexp_replace(col("cleanText3"), "'s\\b", "")).drop("cleanText3")
           .withColumn("cleanText", regexp_replace(col("cleanText4"), "\\s+", " ")).drop("cleanText4")
-          // .withColumn("origWord", split(col("cleanText"), " "))
-          // .select(col("filename"), explode(col("origWord")).as("origWord"))
         
         // store clean text as silver copy
         cleanTextDF.write.mode("overwrite").parquet(f"$silverKey")
