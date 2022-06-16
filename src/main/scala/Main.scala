@@ -69,6 +69,7 @@ object Prosody extends App{
         val cmuDict = spark.read
           .schema(cmuDictSchema)
           .parquet(cmuDictLocation)
+          .cache
         // find phonemes for each word
         // by joining with cmu dict
         // try with and without leading and ending apostrophes
