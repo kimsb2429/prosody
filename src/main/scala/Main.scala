@@ -22,13 +22,14 @@ object Prosody extends App{
         // Build spark session
         val spark = SparkSession
                         .builder()
-                        // .config("spark.files", soundoutScript)
+                        .config("spark.files", soundoutScript)
                         .appName("prosody")
                         .getOrCreate()
 
         // Get spark context
         val sc = spark.sparkContext
-        sc.addFile(soundoutScript) 
+        val soundoutScriptPath = "/home/ec2-user/" + soundoutScript.split("/").last
+        sc.addFile(soundoutScriptPath) 
 
         // read 
         val textDF = spark.read
@@ -110,8 +111,8 @@ object Prosody extends App{
           .coalesce(1)
 
         
-        val soundoutScriptName = soundoutScript.split("/").last
-        val soundoutScriptPath = "./" + soundoutScriptName
+        
+        // val soundoutScriptPath = "./" + soundoutScriptName
         // val soundoutScriptPath = "/home/ec2-user/" + soundoutScriptName
         // val soundoutScriptPath = SparkFiles.get(soundoutScriptName)
 
@@ -121,7 +122,9 @@ object Prosody extends App{
       //  // val soundoutScriptPath = "file:/tmp/test.py"
         // val soundoutScriptPath = "s3://prosodies/soundout.py"
         // val soundoutScriptPath = "/Users/jaekim/wcd/wcd/hello_world/test.py"
-        val pipeRDD = unknownWordsRDD.pipe(soundoutScriptPath)
+        // val pipeRDD = unknownWordsRDD.pipe(soundoutScriptPath)
+        val pipeRDD = unknownWordsRDD.pipe(SparkFiles.get(soundoutScriptPath))
+
         // println(pipeRDD.count)
       //  pipeRDD.foreach(println)
 
