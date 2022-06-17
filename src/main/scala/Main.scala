@@ -25,6 +25,10 @@ object Prosody extends App{
                         .appName("prosody")
                         .getOrCreate()
 
+        // Get spark context
+        val sc = spark.sparkContext
+        sc.addFile(soundoutScript) 
+
         // read 
         val textDF = spark.read
                         .option("wholetext", true)
@@ -104,9 +108,8 @@ object Prosody extends App{
           .select(col("unknownWords"))
           .coalesce(1)
 
-        val sc = spark.sparkContext
+        
         val soundoutScriptName = soundoutScript.split("/").last
-        sc.addFile(soundoutScript) 
         val soundoutScriptPath = SparkFiles.get(soundoutScriptName)
 
         val unknownWordsRDD = unknownWordsDF.rdd
