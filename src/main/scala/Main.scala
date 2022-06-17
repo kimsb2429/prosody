@@ -1,5 +1,6 @@
 import org.apache.log4j._
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.SparkFiles
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
 
@@ -104,8 +105,9 @@ object Prosody extends App{
           .coalesce(1)
 
         val sc = spark.sparkContext
-        // val soundoutScriptName = "./"+soundoutScript.split("/").last
+        val soundoutScriptName = soundoutScript.split("/").last
         sc.addFile(soundoutScript) 
+        val soundoutScriptPath = SparkFiles.get(soundoutScriptName)
 
         val unknownWordsRDD = unknownWordsDF.rdd
         //  // dbutils.fs.cp("dbfs:/FileStore/tables/test-1.py", "file:///tmp/test.py")
@@ -113,7 +115,7 @@ object Prosody extends App{
       //  // val soundoutScriptPath = "file:/tmp/test.py"
         // val soundoutScriptPath = "s3://prosodies/soundout.py"
         // val soundoutScriptPath = "/Users/jaekim/wcd/wcd/hello_world/test.py"
-        val pipeRDD = unknownWordsRDD.pipe(soundoutScript)
+        val pipeRDD = unknownWordsRDD.pipe(soundoutScriptPath)
         // println(pipeRDD.count)
       //  pipeRDD.foreach(println)
 
