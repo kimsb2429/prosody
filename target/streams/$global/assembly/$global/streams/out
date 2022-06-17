@@ -4,7 +4,7 @@
 [0m[[0m[0minfo[0m] [0m[0mMerging files...[0m
 [0m[[0m[33mwarn[0m] [0m[0mMerging 'META-INF/MANIFEST.MF' with strategy 'discard'[0m
 [0m[[0m[33mwarn[0m] [0m[0mStrategy 'discard' was applied to a file[0m
-[0m[[0m[0minfo[0m] [0m[0mSHA-1: 719dc5f37bd6dcfb2ddd1f4d9f5f4196d6272bbd[0m
+[0m[[0m[0minfo[0m] [0m[0mSHA-1: 7dee70bd11339a09b753118b8d32de7846bea23f[0m
 [0m[[0m[0minfo[0m] [0m[0mPackaging /root/prosody/target/scala-2.11/prosody-assembly-0.0.1.jar ...[0m
 [0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	Prosody$$anonfun$1.class[0m
