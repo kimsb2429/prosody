@@ -1,6 +1,6 @@
 import org.apache.log4j._
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.SparkFiles
+import org.apache.spark.SparkFiles
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
 
