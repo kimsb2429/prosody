@@ -104,7 +104,7 @@ object Prosody extends App{
           .coalesce(1)
 
         val sc = spark.sparkContext
-        val soundoutScriptName = "./"+soundoutScript.split("/").last
+        // val soundoutScriptName = "./"+soundoutScript.split("/").last
         sc.addFile(soundoutScript) 
 
         val unknownWordsRDD = unknownWordsDF.rdd
@@ -113,7 +113,7 @@ object Prosody extends App{
       //  // val soundoutScriptPath = "file:/tmp/test.py"
         // val soundoutScriptPath = "s3://prosodies/soundout.py"
         // val soundoutScriptPath = "/Users/jaekim/wcd/wcd/hello_world/test.py"
-        val pipeRDD = unknownWordsRDD.pipe(soundoutScriptName)
+        val pipeRDD = unknownWordsRDD.pipe(soundoutScript)
         // println(pipeRDD.count)
       //  pipeRDD.foreach(println)
 
