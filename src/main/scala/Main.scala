@@ -23,7 +23,7 @@ object Prosody extends App{
         // Build spark session
         val spark = SparkSession
                         .builder()
-                        .config("spark.files", soundoutScript)
+                        // .config("spark.files", soundoutScript)
                         .appName("prosody")
                         .getOrCreate()
 
@@ -119,10 +119,10 @@ object Prosody extends App{
         // println(mntPath)
         // val soundoutScriptPath = "/home/ec2-user/" + soundoutScriptName
         // val soundoutScriptPath = SparkFiles.get(soundoutScriptName)
-      //   val cmd1 = Seq("hdfs", "dfs", "-copyToLocal", soundoutScript, soundoutScriptPath)
-      //   cmd1 !
-      //   val cmd2 = Seq("chmod", "777", soundoutScriptPath)
-      //   cmd2 !
+        val cmd1 = Seq("hdfs", "dfs", "-copyToLocal", soundoutScript, soundoutScriptPath)
+        cmd1 !
+        val cmd2 = Seq("chmod", "777", soundoutScriptPath)
+        cmd2 !
       //   val unknownWordsRDD = unknownWordsDF.rdd
       //   //  // dbutils.fs.cp("dbfs:/FileStore/tables/test-1.py", "file:///tmp/test.py")
       // //  // dbutils.fs.ls("file:/tmp/test.py")
