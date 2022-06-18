@@ -1,6 +1,6 @@
 import org.apache.log4j._
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.SparkFiles
+// import org.apache.spark.SparkFiles
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
 import scala.sys.process._
@@ -127,7 +127,7 @@ object Prosody extends App{
         // val soundoutScriptPath = "/Users/jaekim/wcd/wcd/hello_world/test.py"
         // val pipeRDD = unknownWordsRDD.pipe(Seq(SparkFiles.get(soundoutScriptName)))
         // val pipeRDD = unknownWordsRDD.pipe(SparkFiles.get(soundoutScriptPath))
-        val pipeRDD = unknownWordsRDD.pipe(soundoutScriptPath)
+        val pipeRDD = unknownWordsRDD.pipe(Seq(soundoutScriptPath))
 
         // println(pipeRDD.count)
       //  pipeRDD.foreach(println)
