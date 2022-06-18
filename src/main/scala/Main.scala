@@ -28,9 +28,9 @@ object Prosody extends App{
                         .getOrCreate()
 
         // Get spark context
-        val sc = spark.sparkContext
-        sc.addFile(soundoutScript)
-        // val soundoutScriptPath = "./" + soundoutScript
+        // val sc = spark.sparkContext
+        // sc.addFile(soundoutScript)
+        val soundoutScriptPath = "file:///home/ec2-user/" + soundoutScript
         // sc.addFile(soundoutScriptPath) 
 
         // read 
@@ -113,8 +113,8 @@ object Prosody extends App{
           .coalesce(1)
 
         
-        val soundoutScriptName = soundoutScript.split("/").last
-        val soundoutScriptPath = "./" + soundoutScriptName
+        // val soundoutScriptName = soundoutScript.split("/").last
+        // val soundoutScriptPath = "./" + soundoutScriptName
         // val mntPath = SparkFiles.get(soundoutScriptPath)
         // println(mntPath)
         // val soundoutScriptPath = "/home/ec2-user/" + soundoutScript
