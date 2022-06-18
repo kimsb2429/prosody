@@ -23,13 +23,13 @@ object Prosody extends App{
         // Build spark session
         val spark = SparkSession
                         .builder()
-                        .config("spark.files", soundoutScript)
+                        // .config("spark.files", soundoutScript)
                         .appName("prosody")
                         .getOrCreate()
 
         // Get spark context
-        // val sc = spark.sparkContext
-        // sc.addFile(soundoutScript)
+        val sc = spark.sparkContext
+        sc.addFile(soundoutScript)
         // val soundoutScriptPath = "./" + soundoutScript
         // sc.addFile(soundoutScriptPath) 
 
