@@ -1,6 +1,6 @@
 import org.apache.log4j._
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.SparkFiles
+// import org.apache.spark.SparkFiles
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
 import scala.sys.process._
@@ -23,14 +23,14 @@ object Prosody extends App{
         // Build spark session
         val spark = SparkSession
                         .builder()
-                        // .config("spark.files", soundoutScript)
+                        .config("spark.files", soundoutScript)
                         .appName("prosody")
                         .getOrCreate()
 
         // Get spark context
-        val sc = spark.sparkContext
-        sc.addFile(soundoutScript)
-        // val soundoutScriptPath = "/home/ec2-user/" + soundoutScript.split("/").last
+        // val sc = spark.sparkContext
+        // sc.addFile(soundoutScript)
+        val soundoutScriptPath = "/home/ec2-user/" + soundoutScript.split("/").last
         // sc.addFile(soundoutScriptPath) 
 
         // read 
@@ -113,14 +113,14 @@ object Prosody extends App{
           .coalesce(1)
 
         
-        val soundoutScriptName = soundoutScript.split("/").last
-        val soundoutScriptPath = "./" + soundoutScriptName
-        val mntPath = SparkFiles.get(soundoutScriptPath)
-        println(mntPath)
+        // val soundoutScriptName = soundoutScript.split("/").last
+        // val soundoutScriptPath = "./" + soundoutScriptName
+        // val mntPath = SparkFiles.get(soundoutScriptPath)
+        // println(mntPath)
         // val soundoutScriptPath = "/home/ec2-user/" + soundoutScriptName
         // val soundoutScriptPath = SparkFiles.get(soundoutScriptName)
-        // val cmd = Seq("chmod", "777", soundoutScriptPath)
-        // cmd !
+        val cmd = Seq("chmod", "777", soundoutScriptPath)
+        cmd !
         val unknownWordsRDD = unknownWordsDF.rdd
         //  // dbutils.fs.cp("dbfs:/FileStore/tables/test-1.py", "file:///tmp/test.py")
       //  // dbutils.fs.ls("file:/tmp/test.py")
