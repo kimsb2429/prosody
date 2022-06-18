@@ -23,7 +23,7 @@ object Prosody extends App{
         // Build spark session
         val spark = SparkSession
                         .builder()
-                        // .config("spark.files", soundoutScript)
+                        .config("spark.files", soundoutScript)
                         .appName("prosody")
                         .getOrCreate()
 
@@ -119,30 +119,30 @@ object Prosody extends App{
         // println(mntPath)
         // val soundoutScriptPath = "/home/ec2-user/" + soundoutScriptName
         // val soundoutScriptPath = SparkFiles.get(soundoutScriptName)
-        val cmd1 = Seq("hdfs", "dfs", "-copyToLocal", soundoutScript, soundoutScriptPath)
-        cmd1 !
-        val cmd2 = Seq("chmod", "777", soundoutScriptPath)
-        cmd2 !
-        val unknownWordsRDD = unknownWordsDF.rdd
-        //  // dbutils.fs.cp("dbfs:/FileStore/tables/test-1.py", "file:///tmp/test.py")
-      //  // dbutils.fs.ls("file:/tmp/test.py")
-      //  // val soundoutScriptPath = "file:/tmp/test.py"
-        // val soundoutScriptPath = "s3://prosodies/soundout.py"
-        // val soundoutScriptPath = "/Users/jaekim/wcd/wcd/hello_world/test.py"
-        // val pipeRDD = unknownWordsRDD.pipe(Seq(SparkFiles.get(soundoutScriptName)))
-        val pipeRDD = unknownWordsRDD.pipe(soundoutScriptPath)
-        // val pipeRDD = unknownWordsRDD.pipe(soundoutScriptPath)
+      //   val cmd1 = Seq("hdfs", "dfs", "-copyToLocal", soundoutScript, soundoutScriptPath)
+      //   cmd1 !
+      //   val cmd2 = Seq("chmod", "777", soundoutScriptPath)
+      //   cmd2 !
+      //   val unknownWordsRDD = unknownWordsDF.rdd
+      //   //  // dbutils.fs.cp("dbfs:/FileStore/tables/test-1.py", "file:///tmp/test.py")
+      // //  // dbutils.fs.ls("file:/tmp/test.py")
+      // //  // val soundoutScriptPath = "file:/tmp/test.py"
+      //   // val soundoutScriptPath = "s3://prosodies/soundout.py"
+      //   // val soundoutScriptPath = "/Users/jaekim/wcd/wcd/hello_world/test.py"
+      //   // val pipeRDD = unknownWordsRDD.pipe(Seq(SparkFiles.get(soundoutScriptName)))
+      //   val pipeRDD = unknownWordsRDD.pipe(soundoutScriptPath)
+      //   // val pipeRDD = unknownWordsRDD.pipe(soundoutScriptPath)
 
-        // println(pipeRDD.count)
-      //  pipeRDD.foreach(println)
+      //   // println(pipeRDD.count)
+      // //  pipeRDD.foreach(println)
 
-        import spark.implicits._
-        pipeRDD.toDF("stress")
-          .coalesce(1)
-          .write
-          .mode("overwrite")
-          .save(stressOutput)
-          // .save("s3://prosodies/stress.parquet")
+      //   import spark.implicits._
+      //   pipeRDD.toDF("stress")
+      //     .coalesce(1)
+      //     .write
+      //     .mode("overwrite")
+      //     .save(stressOutput)
+      //     // .save("s3://prosodies/stress.parquet")
         
 
     }
