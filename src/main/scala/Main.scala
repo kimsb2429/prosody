@@ -1,9 +1,9 @@
 import org.apache.log4j._
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.SparkFiles
+// import org.apache.spark.SparkFiles
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
-import scala.sys.process._
+// import scala.sys.process._
 
 object Prosody extends App{
 
@@ -28,8 +28,8 @@ object Prosody extends App{
                         .getOrCreate()
 
         // Get spark context
-        val sc = spark.sparkContext
-        sc.addFile(soundoutScript)
+        // val sc = spark.sparkContext
+        // sc.addFile(soundoutScript)
         // val soundoutScriptPath = "/home/ec2-user/" + soundoutScript.split("/").last
         // sc.addFile(soundoutScriptPath) 
 
@@ -113,12 +113,12 @@ object Prosody extends App{
           .coalesce(1)
 
         
-        val soundoutScriptName = soundoutScript.split("/").last
+        // val soundoutScriptName = soundoutScript.split("/").last
         // val soundoutScriptPath = "./" + soundoutScriptName
         // val mntPath = SparkFiles.get(soundoutScriptPath)
         // println(mntPath)
-        // val soundoutScriptPath = "/home/ec2-user/" + soundoutScriptName
-        val soundoutScriptPath = "file://"+SparkFiles.get(soundoutScriptName)
+        val soundoutScriptPath = "/home/ec2-user/" + soundoutScript
+        // val soundoutScriptPath = "file://"+SparkFiles.get(soundoutScriptName)
         // val cmd1 = Seq("hdfs", "dfs", "-copyToLocal", soundoutScript, soundoutScriptPath)
         // cmd1 !
         // val cmd2 = Seq("chmod", "777", soundoutScriptPath)
