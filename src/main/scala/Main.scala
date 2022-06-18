@@ -28,10 +28,10 @@ object Prosody extends App{
                         .getOrCreate()
 
         // Get spark context
-        // val sc = spark.sparkContext
+        val sc = spark.sparkContext
         // sc.addFile(soundoutScript)
-        // val soundoutScriptPath = "/home/ec2-user/" + soundoutScript.split("/").last
-        // sc.addFile(soundoutScriptPath) 
+        val soundoutScriptPath = "/home/ec2-user/" + soundoutScript
+        sc.addFile(soundoutScriptPath) 
 
         // read 
         val textDF = spark.read
@@ -117,20 +117,21 @@ object Prosody extends App{
         // val soundoutScriptPath = "./" + soundoutScriptName
         // val mntPath = SparkFiles.get(soundoutScriptPath)
         // println(mntPath)
-        val soundoutScriptPath = "/home/ec2-user/" + soundoutScript
+        // val soundoutScriptPath = "/home/ec2-user/" + soundoutScript
         // val soundoutScriptPath = "file://"+SparkFiles.get(soundoutScriptName)
         // val cmd1 = Seq("hdfs", "dfs", "-copyToLocal", soundoutScript, soundoutScriptPath)
         // cmd1 !
         // val cmd2 = Seq("chmod", "777", soundoutScriptPath)
         // cmd2 !
         val unknownWordsRDD = unknownWordsDF.rdd
+        val soundoutScriptCurPath = "./" + soundoutScript
         //  // dbutils.fs.cp("dbfs:/FileStore/tables/test-1.py", "file:///tmp/test.py")
       //  // dbutils.fs.ls("file:/tmp/test.py")
       //  // val soundoutScriptPath = "file:/tmp/test.py"
         // val soundoutScriptPath = "s3://prosodies/soundout.py"
         // val soundoutScriptPath = "/Users/jaekim/wcd/wcd/hello_world/test.py"
         // val pipeRDD = unknownWordsRDD.pipe(Seq(SparkFiles.get(soundoutScriptName)))
-        val pipeRDD = unknownWordsRDD.pipe(soundoutScriptPath)
+        val pipeRDD = unknownWordsRDD.pipe(soundoutScriptCurPath)
         // val pipeRDD = unknownWordsRDD.pipe(soundoutScriptPath)
 
         // println(pipeRDD.count)
