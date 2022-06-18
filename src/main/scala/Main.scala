@@ -30,7 +30,7 @@ object Prosody extends App{
         // Get spark context
         val sc = spark.sparkContext
         // sc.addFile(soundoutScript)
-        val soundoutScriptPath = "/home/ec2-user/" + soundoutScript
+        val soundoutScriptPath = "./" + soundoutScript
         sc.addFile(soundoutScriptPath) 
 
         // read 
