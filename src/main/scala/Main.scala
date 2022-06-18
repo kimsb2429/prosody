@@ -23,15 +23,15 @@ object Prosody extends App{
         // Build spark session
         val spark = SparkSession
                         .builder()
-                        // .config("spark.files", soundoutScript)
+                        .config("spark.files", soundoutScript)
                         .appName("prosody")
                         .getOrCreate()
 
         // Get spark context
-        val sc = spark.sparkContext
+        // val sc = spark.sparkContext
         // sc.addFile(soundoutScript)
-        val soundoutScriptPath = "./" + soundoutScript
-        sc.addFile(soundoutScriptPath) 
+        // val soundoutScriptPath = "./" + soundoutScript
+        // sc.addFile(soundoutScriptPath) 
 
         // read 
         val textDF = spark.read
@@ -113,8 +113,8 @@ object Prosody extends App{
           .coalesce(1)
 
         
-        // val soundoutScriptName = soundoutScript.split("/").last
-        // val soundoutScriptPath = "./" + soundoutScriptName
+        val soundoutScriptName = soundoutScript.split("/").last
+        val soundoutScriptPath = "./" + soundoutScriptName
         // val mntPath = SparkFiles.get(soundoutScriptPath)
         // println(mntPath)
         // val soundoutScriptPath = "/home/ec2-user/" + soundoutScript
@@ -124,15 +124,15 @@ object Prosody extends App{
         // val cmd2 = Seq("chmod", "777", soundoutScriptPath)
         // cmd2 !
         val unknownWordsRDD = unknownWordsDF.rdd
-        val soundoutScriptCurPath = "./" + soundoutScript
+        // val soundoutScriptCurPath = "./" + soundoutScriptName
         //  // dbutils.fs.cp("dbfs:/FileStore/tables/test-1.py", "file:///tmp/test.py")
       //  // dbutils.fs.ls("file:/tmp/test.py")
       //  // val soundoutScriptPath = "file:/tmp/test.py"
         // val soundoutScriptPath = "s3://prosodies/soundout.py"
         // val soundoutScriptPath = "/Users/jaekim/wcd/wcd/hello_world/test.py"
         // val pipeRDD = unknownWordsRDD.pipe(Seq(SparkFiles.get(soundoutScriptName)))
-        val pipeRDD = unknownWordsRDD.pipe(soundoutScriptCurPath)
-        // val pipeRDD = unknownWordsRDD.pipe(soundoutScriptPath)
+        // val pipeRDD = unknownWordsRDD.pipe(soundoutScriptCurPath)
+        val pipeRDD = unknownWordsRDD.pipe(soundoutScriptPath)
 
         // println(pipeRDD.count)
       //  pipeRDD.foreach(println)
