@@ -23,13 +23,13 @@ object Prosody extends App{
         // Build spark session
         val spark = SparkSession
                         .builder()
-                        .config("spark.files", soundoutScript)
+                        // .config("spark.files", soundoutScript)
                         .appName("prosody")
                         .getOrCreate()
 
         // Get spark context
-        // val sc = spark.sparkContext
-        // sc.addFile(soundoutScript)
+        val sc = spark.sparkContext
+        sc.addFile(soundoutScript)
         // val soundoutScriptPath = "/home/ec2-user/" + soundoutScript.split("/").last
         // sc.addFile(soundoutScriptPath) 
 
@@ -114,8 +114,10 @@ object Prosody extends App{
 
         
         val soundoutScriptName = soundoutScript.split("/").last
-        // val soundoutScriptPath = "./" + soundoutScriptName
-        val soundoutScriptPath = "/home/ec2-user/" + soundoutScriptName
+        val soundoutScriptPath = "./" + soundoutScriptName
+        val mntPath = SparkFiles.get(soundoutScriptPath)
+        println(mntPath)
+        // val soundoutScriptPath = "/home/ec2-user/" + soundoutScriptName
         // val soundoutScriptPath = SparkFiles.get(soundoutScriptName)
         // val cmd = Seq("chmod", "777", soundoutScriptPath)
         // cmd !
@@ -126,8 +128,8 @@ object Prosody extends App{
         // val soundoutScriptPath = "s3://prosodies/soundout.py"
         // val soundoutScriptPath = "/Users/jaekim/wcd/wcd/hello_world/test.py"
         // val pipeRDD = unknownWordsRDD.pipe(Seq(SparkFiles.get(soundoutScriptName)))
-        // val pipeRDD = unknownWordsRDD.pipe(SparkFiles.get(soundoutScriptPath))
         val pipeRDD = unknownWordsRDD.pipe(soundoutScriptPath)
+        // val pipeRDD = unknownWordsRDD.pipe(soundoutScriptPath)
 
         // println(pipeRDD.count)
       //  pipeRDD.foreach(println)
