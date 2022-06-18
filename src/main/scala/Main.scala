@@ -31,6 +31,7 @@ object Prosody extends App{
         // val sc = spark.sparkContext
         // sc.addFile(soundoutScript)
         val soundoutScriptPath = "/home/ec2-user/" + soundoutScript
+        val soundoutCmd = "python3 " + soundoutScriptPath
         // sc.addFile(soundoutScriptPath) 
 
         // read 
@@ -132,7 +133,7 @@ object Prosody extends App{
         // val soundoutScriptPath = "/Users/jaekim/wcd/wcd/hello_world/test.py"
         // val pipeRDD = unknownWordsRDD.pipe(Seq(SparkFiles.get(soundoutScriptName)))
         // val pipeRDD = unknownWordsRDD.pipe(soundoutScriptCurPath)
-        val pipeRDD = unknownWordsRDD.pipe(soundoutScriptPath)
+        val pipeRDD = unknownWordsRDD.pipe(soundoutCmd)
 
         // println(pipeRDD.count)
       //  pipeRDD.foreach(println)
