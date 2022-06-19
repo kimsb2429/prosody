@@ -31,7 +31,7 @@ object Prosody extends App{
         // val sc = spark.sparkContext
         // sc.addFile(soundoutScript)
         val soundoutScriptPath = "/home/ec2-user/" + soundoutScript
-        val soundoutCmd = Seq("sudo", "python3", soundoutScriptPath)
+        val soundoutCmd = Seq("python3", soundoutScriptPath)
         // sc.addFile(soundoutScriptPath) 
 
         // read 
