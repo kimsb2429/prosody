@@ -143,7 +143,7 @@ object Prosody extends App{
           .coalesce(1)
           .write
           .mode("overwrite")
-          .save(stressOutput)
+          .parquet(f"$stressOutput")
           // .save("s3://prosodies/stress.parquet")
         
 
