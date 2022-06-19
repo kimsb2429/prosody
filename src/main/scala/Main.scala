@@ -112,7 +112,8 @@ object Prosody extends App{
       //    .withColumn("concatWords", mkString(col("words")))
           .select(col("unknownWords"))
           .coalesce(1)
-
+        
+        unknownWordsDF.write.mode("overwrite").csv(f"$goldKey")
         
         // val soundoutScriptName = soundoutScript.split("/").last
         // val soundoutScriptPath = "./" + soundoutScriptName
