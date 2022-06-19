@@ -97,8 +97,8 @@ object Prosody extends App{
           .join(broadcast(cmuDict), col("origWordNoApos") === col("dictWord"), "left")
           .withColumnRenamed("stress", "origNoAposStress").drop("pronunciation")
           .withColumn("stress", coalesce(col("origStress"), col("origNoAposStress")))
-          .filter(col("origWord").isNotNull)
-          .withColumn("stress",getStressUDF(col("origWord")))
+          // .filter(col("origWord").isNotNull)
+          // .withColumn("stress",getStressUDF(col("origWord")))
         // val df = spark.read.parquet(file_location)
 
 
