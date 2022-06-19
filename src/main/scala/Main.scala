@@ -113,7 +113,7 @@ object Prosody extends App{
           .select(col("unknownWords"))
           .coalesce(1)
         
-        unknownWordsDF.write.mode("overwrite").txt(f"$goldKey")
+        unknownWordsDF.write.mode("overwrite").json(f"$goldKey")
         
         // val soundoutScriptName = soundoutScript.split("/").last
         // val soundoutScriptPath = "./" + soundoutScriptName
