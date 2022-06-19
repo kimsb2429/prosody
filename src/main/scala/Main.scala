@@ -31,13 +31,16 @@ object Prosody extends App{
         // val sc = spark.sparkContext
         // sc.addFile(soundoutScript)
         // val soundoutCmd = Seq("sudo", "/usr/bin/python3", soundoutScript)
-        val soundoutCmd = Seq(
-          "echo" 
-          ,"-e" 
-          ,"\"import sys\nfor line in sys.stdin: print(line)\"" 
-          ,"|" 
-          ,"python3"
-        )
+        // val soundoutCmd = Seq(
+        //   "python3"
+        //   ,"-c" 
+        //   ,"""\"exec(\"import sys\nfor r in range(10): print 'rob'\")"
+        //   "echo" 
+        //   ,"-e" 
+        //   ,"\"import sys\nfor line in sys.stdin: print(line)\"" 
+        //   ,"|" 
+        //   ,"python3"
+        // )
         // sc.addFile(soundoutScriptPath) 
 
         // read 
@@ -140,7 +143,7 @@ object Prosody extends App{
         // val soundoutScriptPath = "/Users/jaekim/wcd/wcd/hello_world/test.py"
         // val pipeRDD = unknownWordsRDD.pipe(Seq(SparkFiles.get(soundoutScriptName)))
         // val pipeRDD = unknownWordsRDD.pipe(soundoutScriptCurPath)
-        val pipeRDD = unknownWordsRDD.pipe(soundoutCmd)
+        val pipeRDD = unknownWordsRDD.pipe(soundoutScript)
 
         // println(pipeRDD.count)
       //  pipeRDD.foreach(println)
