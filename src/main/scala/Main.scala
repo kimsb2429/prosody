@@ -51,7 +51,6 @@ object Prosody extends App{
         // read stress  dictionary
         val stressDictSchema = StructType(Array(
           StructField("dictWord", StringType, nullable = true),
-          StructField("pronunciation", StringType, nullable = true),
           StructField("stress", StringType, nullable = true)
         ))
         val stressDict = spark.read
