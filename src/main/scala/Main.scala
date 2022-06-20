@@ -90,12 +90,13 @@ object Prosody extends App{
         // get stress from pincelate
         val unknownWordsRDD = unknownWordsDF.rdd.repartition(1)
         val pipeRDD = unknownWordsRDD.pipe(soundoutScript)
-        val stressRDD = pipeRDD.filter(col("stress").isNotNull && trim(col("stress")) =!= "")
-
+        
         import spark.implicits._
-        stressRDD.toDF("stress")
+        val stressDF = pipeRDD.toDF("stress")
+          .filter(col("stress").isNotNull && trim(col("stress")) =!= "")
           .coalesce(1)
-          .write
+        
+        stressDF.write
           .mode("overwrite")
           .parquet(f"$stressOutput")
 

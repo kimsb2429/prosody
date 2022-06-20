@@ -4,15 +4,9 @@
 [0m[[0m[0minfo[0m] [0m[0mMerging files...[0m
 [0m[[0m[33mwarn[0m] [0m[0mMerging 'META-INF/MANIFEST.MF' with strategy 'discard'[0m
 [0m[[0m[33mwarn[0m] [0m[0mStrategy 'discard' was applied to a file[0m
-[0m[[0m[0minfo[0m] [0m[0mSHA-1: 908f5b3b8794353d9f921cf62d83897432ef2b0a[0m
+[0m[[0m[0minfo[0m] [0m[0mSHA-1: 7dac8607be45f1b0bef9225c379735e8ce98abd6[0m
 [0m[[0m[0minfo[0m] [0m[0mPackaging /root/prosody/target/scala-2.11/prosody-assembly-0.0.1.jar ...[0m
 [0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Prosody$$anonfun$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /root/prosody/target/streams/$global/assemblyOption/$global/streams/assembly/b69cc86f64259e1b6f07cee1d3b0bd0cfe90f432_dir/Prosody$$anonfun$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Prosody$$typecreator1$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /root/prosody/target/streams/$global/assemblyOption/$global/streams/assembly/b69cc86f64259e1b6f07cee1d3b0bd0cfe90f432_dir/Prosody$$typecreator1$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Prosody$$typecreator2$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /root/prosody/target/streams/$global/assemblyOption/$global/streams/assembly/b69cc86f64259e1b6f07cee1d3b0bd0cfe90f432_dir/Prosody$$typecreator2$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	Prosody$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /root/prosody/target/streams/$global/assemblyOption/$global/streams/assembly/b69cc86f64259e1b6f07cee1d3b0bd0cfe90f432_dir/Prosody$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	Prosody.class[0m
