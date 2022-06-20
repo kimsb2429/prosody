@@ -95,6 +95,9 @@ object Prosody extends App{
         val stressDF = pipeRDD.toDF("stress")
           .filter(col("stress").isNotNull && trim(col("stress")) =!= "")
           .coalesce(1)
+          .withColumn("stressSplit", split(col("stress"),","))
+          .select(col("stressSplit").getItem(0).as("dictWord"), col("stressSplit").getItem(1).as("stress"))
+    
         
         stressDF.write
           .mode("overwrite")
