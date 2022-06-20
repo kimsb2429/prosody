@@ -100,15 +100,14 @@ object Prosody extends App{
         // save new word-stress pairs
         // stressDF.write.mode("overwrite").parquet(stressOutput)
 
-        // combine new word-stress pairs with old ones
-        val newStressDict = stressDict.union(stressDF)
-
         // update stressDict
-        newStressDict.write.mode("overwrite").parquet(stressDictLocation)
+        stressDF.write.mode("append").parquet(stressDictLocation)
 
+        // combine new word-stress pairs with old ones
         // apply new stress patterns
         // concat words -> text, stresses -> stress sequence
         // num rows in final df == num files uploaded
+        val newStressDict = stressDict.union(stressDF)
         val joinStressDict = newStressDict.withColumnRenamed("stress","newStress")
         val finalTextStressDF = textStressDF.withColumnRenamed("stress","existingStress")
           .select(col("filename"), col("origWordNoApos"), col("existingStress"))
