@@ -1,9 +1,7 @@
 import org.apache.log4j._
 import org.apache.spark.sql.SparkSession
-// import org.apache.spark.SparkFiles
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
-// import scala.sys.process._
 
 object Prosody extends App{
 
@@ -11,12 +9,9 @@ object Prosody extends App{
 
         // Command Line Args for setting directories
         val bronzeKey = args(0)
-        // val bronzeKey = "s3://prosodies-bronze/20220613162722/"
         val silverKey = args(1)
-        // val cmuDictLocation ="s3://prosodies/find-phonemes-input-path/cmudict.parquet/"
         val goldKey = args(2)
-        val cmuDictLocation = args(3)
-        // val soundoutScriptPath = "s3://prosodies/soundout.py"
+        val stressDictLocation = args(3)
         val soundoutScript = args(4)
         val stressOutput = args(5)
 
@@ -27,22 +22,6 @@ object Prosody extends App{
                         .appName("prosody")
                         .getOrCreate()
 
-        // Get spark context
-        // val sc = spark.sparkContext
-        // sc.addFile(soundoutScript)
-        // val soundoutCmd = Seq("sudo", "/usr/bin/python3", soundoutScript)
-        // val soundoutCmd = Seq(
-        //   "python3"
-        //   ,"-c" 
-        //   ,"""\"exec(\"import sys\nfor r in range(10): print 'rob'\")"
-        //   "echo" 
-        //   ,"-e" 
-        //   ,"\"import sys\nfor line in sys.stdin: print(line)\"" 
-        //   ,"|" 
-        //   ,"python3"
-        // )
-        // sc.addFile(soundoutScriptPath) 
-
         // read 
         val textDF = spark.read
                         .option("wholetext", true)
@@ -50,8 +29,6 @@ object Prosody extends App{
                         .withColumnRenamed("value","text")
                         .withColumn("filename", input_file_name)
                         .coalesce(1)
-
-        // textDF.write.mode("overwrite").parquet(f"$silverKey")
 
         // clean text:
         // mark new lines with a " nnn " for which pincelate will return null
@@ -71,47 +48,33 @@ object Prosody extends App{
         // store clean text as silver copy
         cleanTextDF.write.mode("overwrite").parquet(f"$silverKey")
         
-
-
-        // val file_location = "/FileStore/tables/part_00000_9a6e7a58_7ac5_4485_839a_2fd3b7cc8b41_c000_snappy-3.parquet"
-        // val cmuDictLocation = "/FileStore/tables/part_00000_fabfd926_9318_4902_ad7b_e0e0f707f28d_c000_snappy.parquet"
-        // val file_location = "/Users/jaekim/Downloads/part-00000-9a6e7a58-7ac5-4485-839a-2fd3b7cc8b41-c000.snappy.parquet"
-        // val cmuDictLocation ="s3://prosodies/find-phonemes-input-path/cmudict.parquet/"
-        // read cmu phoneme dictionary
-        val cmuDictSchema = StructType(Array(
+        // read stress  dictionary
+        val stressDictSchema = StructType(Array(
           StructField("dictWord", StringType, nullable = true),
           StructField("pronunciation", StringType, nullable = true),
           StructField("stress", StringType, nullable = true)
         ))
-        val cmuDict = spark.read
-          .schema(cmuDictSchema)
-          .parquet(cmuDictLocation)
+        val stressDict = spark.read
+          .schema(stressDictSchema)
+          .parquet(stressDictLocation)
           .cache
+
         // find phonemes for each word
-        // by joining with cmu dict
+        // by joining with stress dict
         // try with and without leading and ending apostrophes
         // coalesce the found phonemes into single column
         // val cleanTextDF = spark.read.parquet(file_location)
-        def getStress(word: String): String = {
-            "hello"
-        }
-        val getStressUDF = udf[String, String](getStress).asNondeterministic()
-
         val textStressDF = cleanTextDF
           .withColumn("origWord", split(col("cleanText"), " "))
           .select(col("filename"), explode(col("origWord")).as("origWord"))
-          .join(broadcast(cmuDict), col("origWord") === col("dictWord"), "left")
+          .join(broadcast(stressDict), col("origWord") === col("dictWord"), "left")
           .withColumnRenamed("stress", "origStress").drop("pronunciation").drop("dictWord")
           .withColumn("origWordNoApos", regexp_replace(col("origWord"), "\\b'$|^'\\b", ""))
-          .join(broadcast(cmuDict), col("origWordNoApos") === col("dictWord"), "left")
+          .join(broadcast(stressDict), col("origWordNoApos") === col("dictWord"), "left")
           .withColumnRenamed("stress", "origNoAposStress").drop("pronunciation")
           .withColumn("stress", coalesce(col("origStress"), col("origNoAposStress")))
-          // .filter(col("origWord").isNotNull)
-          // .withColumn("stress",getStressUDF(col("origWord")))
-        // val df = spark.read.parquet(file_location)
 
-
-        // find the words that were not in cmu dict
+        // find words not found in stress dict
         val unknownWordsDF = textStressDF
           .filter(col("stress").isNull && col("origWordNoApos").isNotNull && trim(col("origWordNoApos")) != "")
           .select(col("filename"), col("origWordNoApos"))
@@ -124,38 +87,17 @@ object Prosody extends App{
         
         unknownWordsDF.write.mode("overwrite").parquet(f"$goldKey")
         
-        // val soundoutScriptName = soundoutScript.split("/").last
-        // val soundoutScriptPath = "./" + soundoutScriptName
-        // val mntPath = SparkFiles.get(soundoutScriptPath)
-        // println(mntPath)
-        // val soundoutScriptPath = "/home/ec2-user/" + soundoutScript
-        // val soundoutScriptPath = "file://"+SparkFiles.get(soundoutScriptName)
-        // val cmd1 = Seq("hdfs", "dfs", "-copyToLocal", soundoutScript, soundoutScriptPath)
-        // cmd1 !
-        // val cmd2 = Seq("chmod", "777", soundoutScriptPath)
-        // cmd2 !
+        // get stress from pincelate
         val unknownWordsRDD = unknownWordsDF.rdd.repartition(1)
-        // val soundoutScriptCurPath = "./" + soundoutScriptName
-        //  // dbutils.fs.cp("dbfs:/FileStore/tables/test-1.py", "file:///tmp/test.py")
-      //  // dbutils.fs.ls("file:/tmp/test.py")
-      //  // val soundoutScriptPath = "file:/tmp/test.py"
-        // val soundoutScriptPath = "s3://prosodies/soundout.py"
-        // val soundoutScriptPath = "/Users/jaekim/wcd/wcd/hello_world/test.py"
-        // val pipeRDD = unknownWordsRDD.pipe(Seq(SparkFiles.get(soundoutScriptName)))
-        // val pipeRDD = unknownWordsRDD.pipe(soundoutScriptCurPath)
         val pipeRDD = unknownWordsRDD.pipe(soundoutScript)
-
-        // println(pipeRDD.count)
-      //  pipeRDD.foreach(println)
+        val stressRDD = pipeRDD.filter(col("stress").isNotNull && trim(col("stress")) =!= "")
 
         import spark.implicits._
-        pipeRDD.toDF("stress")
+        stressRDD.toDF("stress")
           .coalesce(1)
           .write
           .mode("overwrite")
           .parquet(f"$stressOutput")
-          // .save("s3://prosodies/stress.parquet")
-        
 
     }
 }
