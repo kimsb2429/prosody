@@ -13,7 +13,7 @@ object Prosody extends App{
         val goldKey = args(2)
         val stressDictLocation = args(3)
         val soundoutScript = args(4)
-        val stressOutput = args(5)
+        // val stressDictBkLocation = args(5)
 
         // Build spark session
         val spark = SparkSession
@@ -46,7 +46,7 @@ object Prosody extends App{
           .withColumn("cleanText", regexp_replace(col("cleanText4"), "\\s+", " ")).drop("cleanText4")
         
         // store clean text as silver copy
-        cleanTextDF.write.mode("overwrite").parquet(f"$silverKey")
+        cleanTextDF.write.mode("overwrite").parquet(silverKey)
         
         // read stress  dictionary
         val stressDictSchema = StructType(Array(
@@ -56,7 +56,6 @@ object Prosody extends App{
         val stressDict = spark.read
           .schema(stressDictSchema)
           .parquet(stressDictLocation)
-          .cache
 
         // find phonemes for each word
         // by joining with stress dict
@@ -84,12 +83,13 @@ object Prosody extends App{
           .select(col("unknownWords"))
           .coalesce(1)
         
-        unknownWordsDF.write.mode("overwrite").parquet(f"$goldKey")
+        // unknownWordsDF.write.mode("overwrite").parquet(goldKey)
         
         // get stress from pincelate
         val unknownWordsRDD = unknownWordsDF.rdd.repartition(1)
         val pipeRDD = unknownWordsRDD.pipe(soundoutScript)
         
+        // make df from pincelate output
         import spark.implicits._
         val stressDF = pipeRDD.toDF("stress")
           .filter(col("stress").isNotNull && trim(col("stress")) =!= "")
@@ -97,10 +97,36 @@ object Prosody extends App{
           .withColumn("stressSplit", split(col("stress"),","))
           .select(col("stressSplit").getItem(0).as("dictWord"), col("stressSplit").getItem(1).as("stress"))
     
-        
-        stressDF.write
-          .mode("overwrite")
-          .parquet(f"$stressOutput")
+        // save new word-stress pairs
+        // stressDF.write.mode("overwrite").parquet(stressOutput)
 
+        // combine new word-stress pairs with old ones
+        val newStressDict = stressDict.union(stressDF)
+
+        // update stressDict
+        newStressDict.write.mode("overwrite").parquet(stressDictLocation)
+
+        // apply new stress patterns
+        // concat words -> text, stresses -> stress sequence
+        // num rows in final df == num files uploaded
+        val joinStressDict = newStressDict.withColumnRenamed("stress","newStress")
+        val finalTextStressDF = textStressDF.withColumnRenamed("stress","existingStress")
+          .select(col("filename"), col("origWordNoApos"), col("existingStress"))
+          .join(broadcast(joinStressDict), col("origWordNoApos") === col("dictWord"), "left")
+          .withColumn("stressRaw", coalesce(col("existingStress"),col("newStress")))
+          .select(col("filename"), col("origWordNoApos"), col("stressRaw"))
+          .withColumn("stress", when(col("origWordNoApos") === "nnn", 9)
+            .when(col("stressRaw").isNull, 9)
+            .otherwise(col("stressRaw")))
+          .select(col("filename"), col("origWordNoApos"), col("stress"))
+          .filter(trim(col("origWordNoApos")) =!= "")
+          .groupBy("filename")
+          .agg(
+            concat_ws(" ", collect_list("origWordNoApos")).alias("text"),
+            concat_ws("", collect_list("stress")).alias("stress")
+          )
+
+        // store text and stress sequence as gold copy
+        finalTextStressDF.write.mode("overwrite").parquet(goldKey)
     }
 }
