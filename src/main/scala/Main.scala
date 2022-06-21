@@ -2,6 +2,8 @@ import org.apache.log4j._
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
+import org.apache.spark.sql.Dataset
+import scala.annotation.tailrec
 
 object Prosody extends App{
 
@@ -127,5 +129,47 @@ object Prosody extends App{
 
         // store text and stress sequence as gold copy
         finalTextStressDF.write.mode("append").parquet(silverKey)
+
+        // define stress object data types
+        case class Stress(filename: String, stress: String)
+
+        // read stress pattern dataframe as dataset
+        import spark.implicits._
+        val stressDS = finalTextStressDF.as[Stress]
+
+        // counts and normalizes pattern matches
+        def countMatch(s: String, pattern: String): Double = {
+          val reg = pattern.r
+          return 1.0 * reg.findAllIn(s).length / s.length
+        }
+
+        // spark udf for countMatch
+        val countMatchUDF = udf((s: String, pattern: String) => countMatch(s, pattern))
+
+        // build dataframe of all profiling patterns and their normalized counts
+        @tailrec
+        def profile(df: Dataset[Stress], patternList: List[String]): Dataset[Stress] = {
+          def profilePattern(df: Dataset[Stress], pattern: String): Dataset[Stress] = {
+            df.withColumn(pattern, countMatchUDF(col("stress"), lit(pattern))).as[Stress]
+          }
+          if (patternList.length == 1) profilePattern(df, patternList.last)
+          else profile(profilePattern(df, patternList.last), patternList.take(patternList.length-1))
+        }
+
+        // analyze proportion of iamb, dactyl, anapest, trochee, and spondee
+        // relative to the length of the text
+        val patternsToAnalyze = List("01", "10", "001", "100", "11")
+        val profileDF = profile(stressDS, patternsToAnalyze)
+          .withColumn("filenameSplit", split(col("filename"),"/"))
+          .withColumn("titleWithFileExt", element_at(col("filenameSplit"), -1))
+          .withColumn("title",substring_index(col("titleWithFileExt"), ".",1))
+          .drop(col("filename"))
+          .drop(col("text"))
+          .drop(col("stress"))
+          .drop(col("filenameSplit"))
+          .drop(col("titleWithFileExt"))
+
+        // save a gold copy of the analysis
+        profileDF.write.mode("append").parquet(goldKey)
     }
 }
