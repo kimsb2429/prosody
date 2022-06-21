@@ -25,7 +25,7 @@ object Prosody extends App{
         // read 
         val textDF = spark.read
                         .option("wholetext", true)
-                        .text(f"$bronzeKey")
+                        .text(bronzeKey)
                         .withColumnRenamed("value","text")
                         .withColumn("filename", input_file_name)
                         .coalesce(1)
@@ -46,7 +46,7 @@ object Prosody extends App{
           .withColumn("cleanText", regexp_replace(col("cleanText4"), "\\s+", " ")).drop("cleanText4")
         
         // store clean text as silver copy
-        cleanTextDF.write.mode("overwrite").parquet(silverKey)
+        // cleanTextDF.write.mode("overwrite").parquet(silverKey)
         
         // read stress  dictionary
         val stressDictSchema = StructType(Array(
@@ -126,6 +126,6 @@ object Prosody extends App{
           )
 
         // store text and stress sequence as gold copy
-        finalTextStressDF.write.mode("overwrite").parquet(goldKey)
+        finalTextStressDF.write.mode("append").parquet(silverKey)
     }
 }
