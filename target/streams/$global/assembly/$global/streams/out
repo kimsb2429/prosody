@@ -4,11 +4,25 @@
 [0m[[0m[0minfo[0m] [0m[0mMerging files...[0m
 [0m[[0m[33mwarn[0m] [0m[0mMerging 'META-INF/MANIFEST.MF' with strategy 'discard'[0m
 [0m[[0m[33mwarn[0m] [0m[0mStrategy 'discard' was applied to a file[0m
-[0m[[0m[0minfo[0m] [0m[0mSHA-1: e8b48e45fec84c5b8a1e79ec271e5975a93a83c3[0m
+[0m[[0m[0minfo[0m] [0m[0mSHA-1: e452668296c7937a293be505774eb0ce3fdb2c71[0m
 [0m[[0m[0minfo[0m] [0m[0mPackaging /root/prosody/target/scala-2.11/prosody-assembly-0.0.1.jar ...[0m
 [0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Prosody$$anonfun$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /root/prosody/target/streams/$global/assemblyOption/$global/streams/assembly/b69cc86f64259e1b6f07cee1d3b0bd0cfe90f432_dir/Prosody$$anonfun$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Prosody$$typecreator10$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /root/prosody/target/streams/$global/assemblyOption/$global/streams/assembly/b69cc86f64259e1b6f07cee1d3b0bd0cfe90f432_dir/Prosody$$typecreator10$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Prosody$$typecreator11$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /root/prosody/target/streams/$global/assemblyOption/$global/streams/assembly/b69cc86f64259e1b6f07cee1d3b0bd0cfe90f432_dir/Prosody$$typecreator11$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Prosody$$typecreator12$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /root/prosody/target/streams/$global/assemblyOption/$global/streams/assembly/b69cc86f64259e1b6f07cee1d3b0bd0cfe90f432_dir/Prosody$$typecreator12$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Prosody$$typecreator16$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /root/prosody/target/streams/$global/assemblyOption/$global/streams/assembly/b69cc86f64259e1b6f07cee1d3b0bd0cfe90f432_dir/Prosody$$typecreator16$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	Prosody$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /root/prosody/target/streams/$global/assemblyOption/$global/streams/assembly/b69cc86f64259e1b6f07cee1d3b0bd0cfe90f432_dir/Prosody$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Prosody$Stress$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /root/prosody/target/streams/$global/assemblyOption/$global/streams/assembly/b69cc86f64259e1b6f07cee1d3b0bd0cfe90f432_dir/Prosody$Stress$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Prosody$Stress.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /root/prosody/target/streams/$global/assemblyOption/$global/streams/assembly/b69cc86f64259e1b6f07cee1d3b0bd0cfe90f432_dir/Prosody$Stress.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	Prosody.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /root/prosody/target/streams/$global/assemblyOption/$global/streams/assembly/b69cc86f64259e1b6f07cee1d3b0bd0cfe90f432_dir/Prosody.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	library.properties[0m

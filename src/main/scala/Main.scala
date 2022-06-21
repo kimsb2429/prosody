@@ -7,6 +7,9 @@ import scala.annotation.tailrec
 
 object Prosody extends App{
 
+      // define stress object data types
+      case class Stress(filename: String, stress: String)
+
       override def main(args: Array[String]): Unit = { 
 
         // Command Line Args for setting directories
@@ -130,12 +133,10 @@ object Prosody extends App{
         // store text and stress sequence as gold copy
         finalTextStressDF.write.mode("append").parquet(silverKey)
 
-        // define stress object data types
-        case class Stress(filename: String, stress: String)
-
         // read stress pattern dataframe as dataset
         import spark.implicits._
-        val stressDS = finalTextStressDF.as[Stress]
+        val stressDS = finalTextStressDF.select(col("filename"),col("stress"))
+          .as[Stress]
 
         // counts and normalizes pattern matches
         def countMatch(s: String, pattern: String): Double = {
@@ -164,7 +165,6 @@ object Prosody extends App{
           .withColumn("titleWithFileExt", element_at(col("filenameSplit"), -1))
           .withColumn("title",substring_index(col("titleWithFileExt"), ".",1))
           .drop(col("filename"))
-          .drop(col("text"))
           .drop(col("stress"))
           .drop(col("filenameSplit"))
           .drop(col("titleWithFileExt"))
