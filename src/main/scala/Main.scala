@@ -90,29 +90,34 @@ object Prosody extends App{
         
         // unknownWordsDF.write.mode("overwrite").parquet(goldKey)
         
-        // get stress from pincelate
+        // convert to rdd with 1 partition
         val unknownWordsRDD = unknownWordsDF.rdd.repartition(1)
-        val pipeRDD = unknownWordsRDD.pipe(soundoutScript)
+        var newStressDict = stressDict
+        // if there are unknown words
+        if(!unknownWordsRDD.isEmpty) {
+          // get stress from pincelate
+          val pipeRDD = unknownWordsRDD.pipe(soundoutScript)
+          
+          // make df from pincelate output
+          import spark.implicits._
+          val stressDF = pipeRDD.toDF("stress")
+            .filter(col("stress").isNotNull && trim(col("stress")) =!= "")
+            .coalesce(1)
+            .withColumn("stressSplit", split(col("stress"),","))
+            .select(col("stressSplit").getItem(0).as("dictWord"), col("stressSplit").getItem(1).as("stress"))
+      
+          // save new word-stress pairs
+          // stressDF.write.mode("overwrite").parquet(stressOutput)
+
+          // update stressDict
+          stressDF.write.mode("append").parquet(stressDictLocation)
+          var newStressDict = stressDict.union(stressDF)
+        }
         
-        // make df from pincelate output
-        import spark.implicits._
-        val stressDF = pipeRDD.toDF("stress")
-          .filter(col("stress").isNotNull && trim(col("stress")) =!= "")
-          .coalesce(1)
-          .withColumn("stressSplit", split(col("stress"),","))
-          .select(col("stressSplit").getItem(0).as("dictWord"), col("stressSplit").getItem(1).as("stress"))
-    
-        // save new word-stress pairs
-        // stressDF.write.mode("overwrite").parquet(stressOutput)
-
-        // update stressDict
-        stressDF.write.mode("append").parquet(stressDictLocation)
-
         // combine new word-stress pairs with old ones
         // apply new stress patterns
         // concat words -> text, stresses -> stress sequence
         // num rows in final df == num files uploaded
-        val newStressDict = stressDict.union(stressDF)
         val joinStressDict = newStressDict.withColumnRenamed("stress","newStress")
         val finalTextStressDF = textStressDF.withColumnRenamed("stress","existingStress")
           .select(col("filename"), col("origWordNoApos"), col("existingStress"))
