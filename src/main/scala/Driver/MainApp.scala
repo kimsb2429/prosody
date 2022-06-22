@@ -17,10 +17,10 @@ object MainApp {
 
         if (className isDefined) {
             try{
-                invoker(className, "run", sparkParams) 
+                invoker(Some(className), "run", sparkParams) 
             } 
             catch {
-                case _: Exception => logger.error("Class not support yet!")
+                case _: Exception => logger.error("Class not supported yet!")
             }
         } else {
             logger.error("Please register class: " + sparkParams.get.inFormat.toString)
@@ -82,8 +82,10 @@ object MainApp {
         val packageName = "SparkJob."
         val suffix = "Job"
         val runtimeMirror = universe.runtimeMirror(getClass.getClassLoader)
+        println(className)
+        println(className.get)
         val moduleSymbol = runtimeMirror.moduleSymbol(Class.forName(packageName + className.get + suffix))
-
+        
         val targetMethod = moduleSymbol.typeSignature
         .members
         .filter(x => x.isMethod && x.name.toString == method)
