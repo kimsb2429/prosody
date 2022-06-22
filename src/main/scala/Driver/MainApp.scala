@@ -34,8 +34,8 @@ object MainApp {
         val cmdParser = {
             import builder._
             OParser.sequence(
-             programName("prosodies_project"),
-             head("prosodies_parser", "0.0.1"),
+             programName("prosodies"),
+             head("prosodies", "0.0.1"),
 
              opt[String]('p', "parser").required().valueName("<Parser>").
              action((x, c) => c.copy(parser = x)).
@@ -56,16 +56,16 @@ object MainApp {
              opt[String]('m', "save-mode").required().valueName("<save-mode>").
              action((x, c) => c.copy(saveMode = x)).text( """output save mode (append, overwrite, ignore)."""),
              
-             opt[String]('c', "partition-column").required().valueName("<partition-column>").
+             opt[String]('c', "partition-column").optional().valueName("<partition-column>").
              action((x, c) => c.copy(partitionColumn = x)).text( """The column(s) being used to partition on. coma seperated. For example: name,date"""),
              
-             opt[String]('c', "ref-path").optional().valueName("<ref-path>").
+             opt[String]('r', "ref-path").optional().valueName("<ref-path>").
              action((x, c) => c.copy(refPath = x)).text( """Input path to the reference file used for cleaning and transformations, e.g., a lookup table."""),
              
-             opt[String]('c', "pipe-path").optional().valueName("<pipe-path>").
+             opt[String]('x', "pipe-path").optional().valueName("<pipe-path>").
              action((x, c) => c.copy(pipePath = x)).text( """Input path to the script used for piping via rdd.pipe."""),
              
-             opt[String]('c', "intermediary-result-path").optional().valueName("<intermediary-result-path>").
+             opt[String]('y', "intermediary-result-path").optional().valueName("<intermediary-result-path>").
              action((x, c) => c.copy(intermediaryResultPath = x)).text( """Output path to store the intermediary result."""),
              
              opt[Map[String, String]]("input-options").optional().valueName("k1=v1,k2=v2...").
