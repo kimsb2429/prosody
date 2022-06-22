@@ -39,7 +39,7 @@ object MainApp {
 
              opt[String]('p', "parser").required().valueName("<Parser>").
              action((x, c) => c.copy(parser = x)).
-             text(s"paramer parser is required. "),
+             text(s"parameter parser is required. "),
 
              opt[String]('i', "input-format").required().valueName("<input-format>").
              action((x, c) => c.copy(inFormat = x)).text(s"input format is required. example: Csv, Json etc. "),
@@ -80,9 +80,9 @@ object MainApp {
 
     def invoker(className: Option[String],method: String, sparkParams: Option[SparkParams]) = {
         val packageName = "SparkJob."
-        val sufix = "Job"
+        val suffix = "Job"
         val runtimeMirror = universe.runtimeMirror(getClass.getClassLoader)
-        val moduleSymbol = runtimeMirror.moduleSymbol(Class.forName(packageName + className.get + sufix))
+        val moduleSymbol = runtimeMirror.moduleSymbol(Class.forName(packageName + className.get + suffix))
 
         val targetMethod = moduleSymbol.typeSignature
         .members
