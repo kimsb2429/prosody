@@ -17,10 +17,10 @@ object MainApp {
 
         if (className isDefined) {
             try{
-                invoker(Some(className), "run", sparkParams) 
+                invoker(className, "run", sparkParams) 
             } 
             catch {
-                case _: Exception => logger.error("Class not supported yet!")
+                case _: Exception => logger.error(s"Class $className not supported yet!")
             }
         } else {
             logger.error("Please register class: " + sparkParams.get.inFormat.toString)
