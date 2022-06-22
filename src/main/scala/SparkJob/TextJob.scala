@@ -16,7 +16,7 @@ object TextJob extends DataJob[DataFrame, DataFrame] {
             op => dataReader = dataReader.option(op._1, op._2)
         }
         val inputDF = dataReader.text(params.inPath)
-        
+        inputDF.show
         inputDF
     }
 
@@ -31,12 +31,15 @@ object TextJob extends DataJob[DataFrame, DataFrame] {
         // - replace multiple spaces with single spaces
         // - explode to get one word per row
         val cleanTextDF = textDF
+          .withColumnRenamed("value","text")
+          .withColumn("filename", input_file_name)
           .withColumn("cleanText1", lower(regexp_replace(col("text"), "[\\n]", " nnn "))).drop("text")
           .withColumn("cleanText2", lower(regexp_replace(col("cleanText1"), "[\\r\\t-]", " "))).drop("cleanText1")
           .withColumn("cleanText3", regexp_replace(col("cleanText2"), "[^a-zA-Z ']", " ")).drop("cleanText2")
           .withColumn("cleanText4", regexp_replace(col("cleanText3"), "'s\\b", "")).drop("cleanText3")
           .withColumn("cleanText", regexp_replace(col("cleanText4"), "\\s+", " ")).drop("cleanText4")
-        
+          .coalesce(1)
+          
         // read stress  dictionary
         val stressDictSchema = StructType(Array(
           StructField("dictWord", StringType, nullable = true),
