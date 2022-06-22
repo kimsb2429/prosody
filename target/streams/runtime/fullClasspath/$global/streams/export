@@ -1,1 +1,1 @@
-/root/prosody/target/scala-2.11/classes:/root/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.11.12.jar
+/root/prosody/target/scala-2.11/classes:/root/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.11.12.jar:/root/.ivy2/cache/com.github.scopt/scopt_2.11/jars/scopt_2.11-4.0.0-RC2.jar
