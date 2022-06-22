@@ -19,7 +19,8 @@ The goal of this project is to process literary text files for prosodic analysis
 - run_spark_job.py is the Airflow dag.
 - stressDict.parquet contains the reference table of words and their corresponding stress patterns.
 - soundout.py is the Python script for using Pincelate.
-- pincelate.sh is the script for bootstrapping EMR worker nodes
+- pincelate.sh is the script for bootstrapping EMR worker nodes.
+- lambda.py contains the lambda function that the API Gateway invokes.
 - Prosody Example.ipynb is the example Jupyter notebook.
 
 ## CI/CD
