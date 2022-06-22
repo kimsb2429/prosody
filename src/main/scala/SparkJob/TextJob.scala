@@ -159,7 +159,7 @@ object TextJob extends DataJob[DataFrame, DataFrame] {
     override def save(p:SaveParameters) = {
         p.df.write
         // .partitionBy(p.params.partitionColumn)
-        .options(p.params.outOptions)
+        // .options(p.params.outOptions)
         .format(p.params.outFormat)
         .mode(p.params.saveMode)
         .save(p.params.outPath)
