@@ -86,6 +86,7 @@ object Prosody extends App{
           .agg(collect_set("origWordNoApos").alias("unknownWords"))
       //    .withColumn("concatWords", mkString(col("words")))
           .select(col("unknownWords"))
+          .filter(size(col("unknownWords")) > 1)
           .coalesce(1)
         
         // unknownWordsDF.write.mode("overwrite").parquet(goldKey)
@@ -111,7 +112,7 @@ object Prosody extends App{
 
           // update stressDict
           stressDF.write.mode("append").parquet(stressDictLocation)
-          var newStressDict = stressDict.union(stressDF)
+          newStressDict = stressDict.union(stressDF)
         }
         
         // combine new word-stress pairs with old ones
