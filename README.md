@@ -14,7 +14,7 @@ The goal of this project is to process literary text files for prosodic analysis
 7. S3 Trigger triggers a Glue crawler, which makes data in the silver and gold buckets available in Athena.
 8. A dashboarding tool can access the tables in Athena for analysis. An example Jupyter notebook is included in this repository.
 
-## Files
+# Files
 - Scala project structure contains the files necessary for compiling a spark jar.
 - run_spark_job.py is the Airflow dag.
 - stressDict.parquet contains the reference table of words and their corresponding stress patterns.
@@ -23,10 +23,10 @@ The goal of this project is to process literary text files for prosodic analysis
 - lambda.py contains the lambda function that the API Gateway invokes.
 - Prosody Example.ipynb is the example Jupyter notebook.
 
-## CI/CD
+# CI/CD
 The spark engine jar file is compiled and copied to the appropriate s3 path through GitHub Actions.
 
-## Notes
+# Notes
 - The spark engine can be easily extended to handle other input formats, e.g., html (literature published online).
 - The silver copy can be used to do ad-hoc analysis on the full prosodic string.
 - The gold copy contains percentages of iambs, dactyls, anapests, trochees, and spondees, normalized by the length of the text.
