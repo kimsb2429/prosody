@@ -1,6 +1,6 @@
 # Introduction
 ## Prosody
-The goal of this project is to process literary text files for prosodic analysis. I used Pincelate by Allison Parrish alongside phonemes available in cmudict to transform each text into its prosodic profile, a string of 0s (no stress), 1s (primary stress), and 2s (secondary stress). 
+The goal of this project is to process literary text files for prosodic analysis. I used [Pincelate by Allison Parrish](https://github.com/aparrish/pincelate) alongside pronunciation phonemes available in cmudict to transform each text into its prosodic profile, a string of 0s (no stress), 1s (primary stress), and 2s (secondary stress). 
 ## Architecture
 
 <img src="architecture.jpeg">
