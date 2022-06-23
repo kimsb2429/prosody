@@ -31,3 +31,4 @@ The spark engine jar file is compiled and copied to the appropriate s3 path thro
 - The silver copy can be used to do ad-hoc analysis on the full prosodic string.
 - The gold copy contains percentages of iambs, dactyls, anapests, trochees, and spondees, normalized by the length of the text.
 - The example Jupyter notebook contains multidimensional scaling of a few texts based on their prosodic profiles.
+- The stress dictionary (stressDict.parquet) is expanded each time a text is uploaded. The words that are not found in the stress dictionary are piped to Pincelate, then added to the dictionary, so that they're readily available in the future.
